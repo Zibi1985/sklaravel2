@@ -14,8 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+/*
+ * Routing dla statycznych stron
+ */
 Route::get('/contact', 'PagesController@contact');
 Route::get('/about', 'PagesController@about');
 
+/*
+ * Routing dla stron video
+ */
 Route::get('/videos', 'VideosController@index');
+Route::get('/videos/create', 'VideosController@create');
+Route::get('/videos/{id}', 'VideosController@show');

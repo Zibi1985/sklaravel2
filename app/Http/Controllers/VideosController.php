@@ -12,6 +12,19 @@ class VideosController extends Controller
      */
     public function index() {
         $videos = Video::latest()->get();
-        return $videos;
+        return view('videos.index')->with('videos', $videos);
+    }
+    /**
+     *  Pobieramy pojedynczego filmu
+     */
+    public function show($id) {
+        $video = Video::findOrFail($id);
+        return view('videos.show')->with('video', $video);
+    }
+    /*
+     *  Wyświetla formularz dodawania filmu
+     */
+    public function create() {
+        return view('videos.create');
     }
 }
