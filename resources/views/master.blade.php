@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SK - Laravel</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -13,7 +13,7 @@
 
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <style>
         body {
@@ -26,6 +26,7 @@
     </style>
 </head>
 <body id="app-layout">
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -39,26 +40,40 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="#">
-                SK - Laravel
+            <a class="navbar-brand" href="{{ config('app.url') }}">
+                {{ config('app.name') }}
             </a>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="#">Start</a></li>
-                <li><a href="articles.html">Filmy</a></li>
-                <li><a href="/contact">Kontakt</a></li>
-                <li><a href="/about">O nas</a></li>
+                <li><a href="{{ action('VideosController@index') }}">Filmy</a></li>
+                <li><a href="{{ action('PagesController@contact') }}">Kontakt</a></li>
+                <li><a href="{{ action('PagesController@about') }}">O nas</a></li>
             </ul>
-
+        @guest
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
+                
                 <!-- Authentication Links -->
-                <li><a href="login.html">Zaloguj</a></li>
-                <li><a href="">Rejestracja</a></li>
-            </ul>
+                <li><a href="{{ route('login') }}">Zaloguj</a></li>
+                <li><a href="{{ route('register') }}">Rejestracja</a></li>
+			</ul>
+        @else
+	        <ul class="nav navbar-nav navbar-right">
+		        <li><a href="{{ action('VideosController@create') }}">Dodaj Film</a></li>
+				<li>
+					<a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+						Wyloguj się
+					</a>
+				</li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+	                {{ csrf_field() }}
+                </form>
+	        </ul>
+        @endguest
+
         </div>
     </div>
 </nav>
@@ -77,7 +92,7 @@
 <!-- Footer -->
 <footer class="site-footer">
     <div class="container">
-        <p>&copy; Strefa Kursów 2016</p>
+        <p>&copy; BoxMp3 2018</p>
     </div>
 </footer>
 

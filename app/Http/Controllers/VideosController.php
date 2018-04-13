@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateVideoRequest;
+use Auth;
 use App\Video;
 use Illuminate\Http\Request;
+use Session;
 
 class VideosController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth', ['only'=>'create']);
+    }
     /**
      * Pobieramy listę filmów
      */
     public function index() {
+
         $videos = Video::latest()->get();
         return view('videos.index')->with('videos', $videos);
     }
@@ -33,7 +39,9 @@ class VideosController extends Controller
      * Zapisujemy film do bazy
      */
     public function store(CreateVideoRequest $request) {
-        Video::create($request->all());
+        $video = new Video($request->all());
+        Auth::user()->videos()->save($video);
+        Session::flash('video_created', 'Film został zapisany do bazy.');
         return redirect('/videos');
 
     }

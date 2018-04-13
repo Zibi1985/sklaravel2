@@ -28,11 +28,9 @@
 					<h4>Pełny opis</h4>
 					<p>{{ $video->description }}</p>
 					<span class="upper-label">Dodał</span>
-					<span class="video-author">Strefa Kursów</span>
+					<span class="video-author">{{ $video->user->name }}</span>
 					<div class="edit-button">
-						<button class="btn btn-primary btn-lg">
-							Edytuj Video
-						</button>
+						<a href="{{ action('VideosController@edit', $video->id) }}" class="btn btn-primary btn-lg">Edytuj Video</a>
 					</div>
 				</div>
 			

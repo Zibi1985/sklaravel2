@@ -24,9 +24,13 @@ Route::get('/about', 'PagesController@about');
  * Routing dla stron video
  */
 /*
- Route::get('/videos', 'VideosController@index');
+Route::get('/videos', 'VideosController@index');
 Route::post('/videos', 'VideosController@store');
 Route::get('/videos/create', 'VideosController@create');
 Route::get('/videos/{id}', 'VideosController@show');
 */
-Route::resource('videos', 'VideosController');
+
+Route::resource('/videos', 'VideosController');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
