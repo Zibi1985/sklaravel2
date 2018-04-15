@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\CreateVideoRequest;
 use Auth;
 use App\Video;
@@ -17,7 +18,6 @@ class VideosController extends Controller
      * Pobieramy listę filmów
      */
     public function index() {
-
         $videos = Video::latest()->get();
         return view('videos.index')->with('videos', $videos);
     }
@@ -32,15 +32,19 @@ class VideosController extends Controller
      *  Wyświetla formularz dodawania filmu
      */
     public function create() {
-        return view('videos.create');
+        $categories = Category::pluck('name', 'id');
+        return view('videos.create')->with('categories', $categories);
     }
 
     /*
      * Zapisujemy film do bazy
      */
     public function store(CreateVideoRequest $request) {
+        //dd($request->CategoryList);
         $video = new Video($request->all());
         Auth::user()->videos()->save($video);
+        $categoryIds = $request->input('CategoryList');
+        $video->categories()->attach($categoryIds);
         Session::flash('video_created', 'Film został zapisany do bazy.');
         return redirect('/videos');
 
@@ -50,7 +54,9 @@ class VideosController extends Controller
      */
     public function edit($id) {
         $video = Video::findOrFail($id);
-        return view('videos.edit')->with('video', $video);
+        $categories = Category::pluck('name', 'id');
+        return view('videos.edit')->with('video', $video)
+                                        ->with('categories', $categories);
 
     }
     /*
@@ -59,6 +65,7 @@ class VideosController extends Controller
     public function update($id, CreateVideoRequest $request) {
         $video = Video::findOrFail($id);
         $video->update($request->all());
+        $video->categories()->sync($request->input('CategoryList'));
         return redirect('/videos');
     }
 }

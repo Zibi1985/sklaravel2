@@ -30,6 +30,6 @@ class User extends Authenticatable
      * Użytkownik jest autorem wielu filmów
      */
     public function videos() {
-        return $this->hasMany(Video::class);
+        return $this->hasMany('App\Video');
     }
 }

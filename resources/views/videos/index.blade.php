@@ -22,9 +22,9 @@
 						</div>
 						<div class="card-content">
 							<a href="/videos/{{ $video->id }}">
-								<h4>{{ $video->title }}</h4>
+								<h4>{{ str_limit($video->title, 35)}}</h4>
 							</a>
-							<p>{{ $video->description }}</p>
+							<p>{{ str_limit($video->description, 48) }}</p>
 							<span class="upper-label">Dodał</span>
 							<span class="video-author">{{ $video->user->name }}</span>
 						</div>

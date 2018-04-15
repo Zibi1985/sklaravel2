@@ -20,3 +20,27 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     el: '#app'
 });
+
+var elixir = require('laravel-elixir');
+require('laravel-browser-sync');
+
+elixir(function(mix) {
+    mix.sass('app.scss');
+    mix.browserify('app.js');
+    mix.browserSync({
+        'js': [
+            'public/**/*.js',
+        ],
+        'css': [
+            'public/**/*.css',
+        ],
+        'views': [
+            'resources/views/**/*'
+        ]
+    }, {
+        proxy: 'homestead.app',
+        reloadDelay: 1000,
+        reloadOnRestart: false,
+        open: false
+    });
+});
